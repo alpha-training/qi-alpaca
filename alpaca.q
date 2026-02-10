@@ -26,7 +26,7 @@ TICKERS:enlist"FAKEPACA"
  }
 
 req:"GET /v2/",.conf.mode," HTTP/1.1\r\n","Host: stream.data.alpaca.markets\r\n","\r\n"
-/
+
 conn:(`$":wss://stream.data.alpaca.markets:443") req
 
 / 4. Validate the Upgrade
