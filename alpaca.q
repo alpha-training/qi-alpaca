@@ -4,7 +4,6 @@
 .qi.frompkg[`alpaca;`norm]
 \d .alpaca
 
-url:`$":wss://stream.data.alpaca.markets:443";
 header:"GET ",.conf.endpoint," HTTP/1.1\r\n","Host: stream.data.alpaca.markets\r\n","\r\n";
 tickers:`$","vs .conf.tickers;
 tname:`$-1_@[.conf.feed;0;upper]; / UpperCamel
@@ -22,7 +21,7 @@ start:{[target]
         if[null H::first c:.ipc.tryconnect target;
             .log.fatal"Could not connect to ",.qi.tostr[target]," '",last[c],"'. Exiting"]];
     .log.info "Connection sequence initiated...";
-    if[not h:first c:.qi.try[url;header;0Ni];
+    if[not h:first c:.qi.try[.conf.url;header;0Ni];
         .log.error err:c 2;
         if[err like"*Protocol*";
             if[.z.o in`l64`m64;
