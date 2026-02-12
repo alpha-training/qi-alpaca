@@ -1,18 +1,23 @@
 \e 1
-.qi.import`ipc;
-.qi.import`log;
+/.qi.import`ipc;
+/.qi.import`log;
 .qi.frompkg[`alpaca;`norm]
 \d .alpaca
 
 header:"GET ",.conf.endpoint," HTTP/1.1\r\n","Host: stream.data.alpaca.markets\r\n","\r\n";
-tickers:`$","vs .conf.tickers;
-tname:`$-1_@[.conf.feed;0;upper]; / UpperCamel
+tickers:$[1=count l:`$","vs .conf.tickers;first l;l]
+tname:$[1=count l:`$"Alpaca",/:-1_'@[;0;upper]each","vs .conf.feed;first l;l]
 
-.z.ws:{
-    {if[4<count x;:neg[H](`.u.upd;tname;.alpaca.norm[`$.conf.feed] x)];
+i:0
+.z.ws:{  / si::i+1;if[i=10;:dbg];
+    0N! .j.k x;
+    {if[4<count x;
+        if["t"~first x`T;:neg[H](`.u.upd;`AlpacaTrade;.alpaca.norm.trades x)];
+        if["q"~first x`T;:neg[H](`.u.upd;`AlpacaQuote;.alpaca.norm.quotes x)];
+        if["b"~first x`T;:neg[H](`.u.upd;`AlpacaBar;.alpaca.norm.bars x)]];
     if[`success~first`$x`T;
             if[`connected=msg:first`$x`msg;neg[.z.w] .j.j`action`key`secret!("auth";.conf.apikey;.conf.secretkey)];
-            if[`authenticated~first msg;neg[.z.w] .j.j(`action;`$.conf.feed)!("subscribe";tickers)]]
+            if[`authenticated~first msg;neg[.z.w] .j.j (`action,a)!$[1-count tickers;b:string `subscribe,count[a:`$","vs .conf.feed]#enlist tickers;@[b;1_til count b;enlist]]]]
     }each .j.k x
  }
 
