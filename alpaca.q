@@ -10,7 +10,6 @@ tname:$[1=count l:`$"Alpaca",/:-1_'@[;0;upper]each","vs .conf.feed;first l;l]
 
 
 .z.ws:{
-    0N! .j.k x;
     {if[4<count x;f:first x`T;
         if["t"~f;:neg[H](`.u.upd;`AlpacaTrade;.alpaca.norm.trades x)];
         if["q"~f;:neg[H](`.u.upd;`AlpacaQuote;.alpaca.norm.quotes x)];

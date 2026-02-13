@@ -4,11 +4,5 @@ high,f
 low,f
 open,f
 close,f
-time,p
-sym,s
-high,f
-low,f
-open,f
-close,f
 volume,j
-volume,j
+vwap,f
