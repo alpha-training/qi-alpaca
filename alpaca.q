@@ -16,9 +16,9 @@ sendtoTP:{
         if["b"~f;:neg[H](`.u.upd;`AlpacaBar;.alpaca.norm.bars x)]
  }
 insertLOCAL:{
-    if["t"~f:first x`T;(t:`AlpacaTrade) insert .alpaca.norm.trades x];
-    if["q"~f;(t:`AlpacaQuote) insert .alpaca.norm.quotes x];
-    if["b"~f;(t:`.AlpacaBar) insert .alpaca.norm.bars x];
+    if["t"~f:first x`T;(t:`AlpacaTrade)insert .alpaca.norm.trades x];
+    if["q"~f;(t:`AlpacaQuote)insert .alpaca.norm.quotes x];
+    if["b"~f;(t:`.AlpacaBar)insert .alpaca.norm.bars x];
     if[not`g=attr get[t]`sym;update `g#sym from t]
  }
 .z.ws:{
