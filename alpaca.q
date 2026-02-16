@@ -1,8 +1,7 @@
 /.qi.import`ipc;
-.qi.import`log;
+/.qi.import`log;
 .qi.frompkg[`alpaca;`norm]
 
-.qi.loadschemas`alpaca
 \d .alpaca
 
 header:"GET ",.conf.endpoint," HTTP/1.1\r\n","Host: stream.data.alpaca.markets\r\n","\r\n";
@@ -28,6 +27,7 @@ insertlocal:{
             :neg[.z.w] .j.j(`action,a)!$[1-count tickers;b:string`subscribe,count[a:`$","vs .conf.feed]#enlist tickers;@[b;1_til count b;enlist]]]]
     }each .j.k x
  }
+
 start:{[target]
     if[.qi.isproc;
         if[null H::.ipc.conn .qi.tosym target;
@@ -35,9 +35,6 @@ start:{[target]
             .log.fatal"Could not connect to ",.qi.tostr[target]," '",last[c],"'. Exiting"]];] 
     .log.info "Connection sequence initiated...";
     if[not h:first c:.qi.try[.conf.url;header;0Ni];
-        .log.error err:c 2;
-        if[err like"*Protocol*";
-            if[.z.o in`l64`m64;
-                .log.info"Try setting the env variable:\nexport SSL_VERIFY_SERVER=NO"]]];
+        :.log.error err:c 2];
     if[h;.log.info"Connection success"];
  }
