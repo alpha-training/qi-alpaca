@@ -17,11 +17,11 @@ sendtotp:{
 insertlocal:{
     if["t"~f:first x`T;(t:`AlpacaTrade)insert norm.trades x];
     if["q"~f;(t:`AlpacaQuote)insert norm.quotes x];
-    if["b"~f;(t:`.AlpacaBar)insert norm.bars x];
-    if[not`g=attr get[t]`sym;update `g#sym from t]
+    if["b"~f;(t:`AlpacaBar)insert norm.bars x];
+    if[not`g=attr get[t]`sym;update`g#sym from t]
  }
-.z.ws:{
-    {if[first[x`T]in"tqb";f:first x`T;:$[.qi.isproc;sendtotp;insertlocal]x]
+.z.ws:{0N! .j.k x;
+    {if[(f:first x`T)in"tqb";:$[.qi.isproc;sendtotp;insertlocal]x]
     if[`success~first`$x`T;
         if[`connected=msg:first`$x`msg;:neg[.z.w] .j.j`action`key`secret!("auth";.conf.apikey;.conf.secretkey)];
         if[`authenticated~first msg;
