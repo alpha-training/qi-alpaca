@@ -34,7 +34,7 @@ norm.Ctrades:{
    `$x`S; / Sym
    "f"$x`p;  / price
    "j"$x`s;  / size
-   "s"$x`tks)
+   `$raze x`tks)
  }
 
 norm.Cquotes:{
