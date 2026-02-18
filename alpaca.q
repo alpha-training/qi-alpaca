@@ -5,7 +5,6 @@ if[first not enlist(.qi.try[get;".conf.ENDPOINT";""]1)in enlist each("/v2/iex";"
     .log.fatal"Make Sure Your ENDPOINT Is Entered Correctly! Check The Spelling"]
 
 .qi.import`ipc;
-
 .qi.frompkg[`alpaca;`norm]
 .qi.import`alpaca
 \d .alpaca
@@ -15,19 +14,19 @@ tickers:$[1=count l:`$","vs .conf.TICKERS;first l;l]
 tname:$[1=count l:`$"Alpaca",/:-1_'@[;0;upper]each","vs .conf.FEED;first l;l]
 
 sendtotp:{
-    if["t"~f:first x`T;:neg[H](`.u.upd;`AlpacaTrade;norm.trades x)];
-    if["q"~f;:neg[H](`.u.upd;`AlpacaQuote;norm.quotes x)];
-    if["b"~f;:neg[H](`.u.upd;`AlpacaBar;norm.bars x)]
+    if["t"~f:first x`T;$[iscrypt:"/"in first x`S;:neg[H](`.u.upd;`AlpacaCryptoT;norm.Ctrades x);:neg[H](`.u.upd;`AlpacaEquityT.csv;norm.Etrades x)]];
+    if["q"~f;$[iscrypt;:neg[H](`.u.upd;`AlpacaCryptoQ;norm.Cquotes x);:neg[H](`.u.upd;`AlpacaEquityQ;norm.Equotes x)]];
+    if["b"~f;$[iscrypt;:neg[H](`.u.upd;`AlpacaCryptoB;norm.Cbars x);:neg[H](`.u.upd;`AlpacaEquityB;norm.Ebars x)]]
  }
 
 insertlocal:{
-    if["t"~f:first x`T;(t:`AlpacaTrade)insert norm.trades x];
-    if["q"~f;(t:`AlpacaQuote)insert norm.quotes x];
-    if["b"~f;(t:`AlpacaBar)insert norm.bars x];
+    if["t"~f:first x`T;$[iscrypt:"/"in first x`S;(t:`AlpacaCryptoT)insert norm.Ctrades x;(t:`AlpacaEquityT)insert norm.Etrades x]]; / 
+    if["q"~f;$[iscrypt;(t:`AlpacaCryptoQ)insert norm.Cquotes x;(t:`AlpacaEquityQ)insert norm.Equotes x]];
+    if["b"~f;$[iscrypt;(t:`AlpacaCryptoB)insert norm.Cbars x;(t:`AlpacaEquityB)insert norm.Ebars x]];
     if[not`g=attr get[t]`sym;update`g#sym from t]
  }
 
-.z.ws:{0N!.j.k x;
+.z.ws:{
     {if[(f:first x`T)in"tqb";:$[.qi.isproc;sendtotp;insertlocal]x];
     if[first 402=x`code;.log.fatal"Ensure ALPACAKEY & ALPACASECRET Are Entered Correctly In .conf"];
     if[first 400=x`code;.log.fatal"Ensure FEED is Spelled Correctly In .conf! (e.g trades rather than trade?)"];
