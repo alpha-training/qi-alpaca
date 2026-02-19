@@ -1,7 +1,7 @@
-.qi.requireconfs`ALPACAKEY`ALPACASECRET`ENDPOINT`FEED`TICKERS`URL
+.qi.requireconfs`ALPACAKEY`ALPACASECRET
 .qi.import`log;
 
-if[first not enlist(.qi.try[get;".conf.ENDPOINT";""]1)in enlist each("/v2/iex";"/v2/test";"/v1beta3/crypto/us";"/v1beta1/news";"/v1beta1/indicative");
+if[first not enlist(.qi.tostr .qi.getconf[`ENDPOINT;"/v1beta3/crypto/us"])in enlist each("/v2/iex";"/v2/test";"/v1beta3/crypto/us";"/v1beta1/news";"/v1beta1/indicative");
     .log.fatal"Make Sure Your ENDPOINT Is Entered Correctly! Check The Spelling"]
 
 .qi.import`ipc;
@@ -10,21 +10,21 @@ if[first not enlist(.qi.try[get;".conf.ENDPOINT";""]1)in enlist each("/v2/iex";"
 \d .alpaca
 if[not .qi.isproc;.qi.loadschemas`alpaca]
 
-URL:`:wss://stream.data.alpaca.markets:443
-header:"GET ",.conf.ENDPOINT," HTTP/1.1\r\n","Host: stream.data.alpaca.markets\r\n","\r\n";
-tickers:`$$[sum","=.conf.TICKERS;","vs .conf.TICKERS;enlist .conf.TICKERS]
-tname:$[1=count l:`$"Alpaca",/:-1_'@[;0;upper]each","vs .conf.FEED;first l;l]
+URL:.qi.tosym .qi.getconf[`url;`:wss://stream.data.alpaca.markets:443]
+header:"GET ",(feed:.qi.tostr .qi.getconf[`ENDPOINT;"/v1beta3/crypto/us"])," HTTP/1.1\r\n","Host: stream.data.alpaca.markets\r\n","\r\n";
+tickers:`$$[sum","=(t:.qi.tostr .qi.getconf[`TICKERS;"ETH/USD"]);","vs t;enlist t]
+tname:$[1=count l:`$"Alpaca",/:-1_'@[;0;upper]each","vs feed;first l;l]
 
 sendtotp:{
     iscrypt:"/"in raze x`S;
-    if["t"~f:first x`T;$[iscrypt;:neg[H](`.u.upd;`AlpacaCryptoT;norm.Ctrades x);:neg[H](`.u.upd;`AlpacaEquityT.csv;norm.Etrades x)]];
+    if["t"~f:first x`T;$[iscrypt;:neg[H](`.u.upd;`AlpacaCryptoT;norm.Ctrades x);:neg[H](`.u.upd;`AlpacaEquityT;norm.Etrades x)]];
     if["q"~f;$[iscrypt;:neg[H](`.u.upd;`AlpacaCryptoQ;norm.Cquotes x);:neg[H](`.u.upd;`AlpacaEquityQ;norm.Equotes x)]];
     if["b"~f;$[iscrypt;:neg[H](`.u.upd;`AlpacaCryptoB;norm.Cbars x);:neg[H](`.u.upd;`AlpacaEquityB;norm.Ebars x)]]
  }
 
 insertlocal:{
     iscrypt:"/"in raze x`S;
-    if["t"~f:first x`T;$[iscrypt;(t:`AlpacaCryptoT)insert norm.Ctrades x;(t:`AlpacaEquityT)insert norm.Etrades x]]; / 
+    if["t"~f:first x`T;$[iscrypt;`.(t:`AlpacaCryptoT)insert norm.Ctrades x;(t:`AlpacaEquityT)insert norm.Etrades x]]; / 
     if["q"~f;$[iscrypt;(t:`AlpacaCryptoQ)insert norm.Cquotes x;(t:`AlpacaEquityQ)insert norm.Equotes x]];
     if["b"~f;$[iscrypt;(t:`AlpacaCryptoB)insert norm.Cbars x;(t:`AlpacaEquityB)insert norm.Ebars x]];
     if[not`g=attr get[t]`sym;update`g#sym from t]
@@ -37,7 +37,7 @@ insertlocal:{
     if[`success~`$x`T;
         if[`connected=msg:first`$x`msg;:neg[.z.w] .j.j`action`key`secret!("auth";.conf.ALPACAKEY;.conf.ALPACASECRET)];
         if[`authenticated~first msg;
-            :neg[.z.w] .j.j(`action,a)!@[b:string`subscribe,count[a:`$","vs .conf.FEED]#tickers;1_til count b;enlist]]]
+            :neg[.z.w] .j.j(`action,a)!@[b;1_til count b:string`subscribe,count[a:`$","vs .qi.getconf[`FEED;"trades,quotes"]]#tickers;enlist]]]
     }each .j.k x
  }
 

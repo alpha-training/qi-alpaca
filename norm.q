@@ -33,7 +33,7 @@ norm.Ctrades:{
   ("P"$-1_x`t; / time stamp 
    `$x`S; / Sym
    "f"$x`p;  / price
-   "j"$x`s;  / size
+   "f"$x`s;  / size
    `$raze x`tks)
  }
 
