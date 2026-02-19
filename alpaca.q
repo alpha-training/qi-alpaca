@@ -1,4 +1,4 @@
-/.qi.requireconfs`ALPACAKEY`ALPACASECRET`ENDPOINT`FEED`TICKERS`URL
+.qi.requireconfs`ALPACAKEY`ALPACASECRET`ENDPOINT`FEED`TICKERS`URL
 .qi.import`log;
 
 if[first not enlist(.qi.try[get;".conf.ENDPOINT";""]1)in enlist each("/v2/iex";"/v2/test";"/v1beta3/crypto/us";"/v1beta1/news";"/v1beta1/indicative");
