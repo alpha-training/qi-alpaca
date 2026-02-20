@@ -25,7 +25,7 @@ sendtotp:{
 
 insertlocal:{
     iscrypt:"/"in raze x`S;
-    if["t"~f:first x`T;$[iscrypt;`.(t:`AlpacaCryptoT)insert norm.Ctrades x;(t:`AlpacaEquityT)insert norm.Etrades x]]; / 
+    if["t"~f:first x`T;$[iscrypt;`.(t:`AlpacaCryptoT)insert norm.Ctrades x;(t:`AlpacaEquityT)insert norm.Etrades x]];
     if["q"~f;$[iscrypt;(t:`AlpacaCryptoQ)insert norm.Cquotes x;(t:`AlpacaEquityQ)insert norm.Equotes x]];
     if["b"~f;$[iscrypt;(t:`AlpacaCryptoB)insert norm.Cbars x;(t:`AlpacaEquityB)insert norm.Ebars x]];
     if[not`g=attr get[t]`sym;update`g#sym from t]
@@ -44,9 +44,9 @@ insertlocal:{
 
 start::{
     if[.qi.isproc;
-        if[null H::.ipc.conn target:.proc.self`depends_on;
+        if[null H::.ipc.conn`tp;
             if[null H::first c:.ipc.tryconnect .ipc.conns[`tp1]`port;
-            .log.fatal"Could not connect to ",.qi.tostr[target]," '",last[c],"'. Exiting"]];] 
+            .log.fatal"Could not connect to ",.qi.tostr[`tp]," '",last[c],"'. Exiting"]];] 
     .log.info "Connection sequence initiated...";
     if[not h:first c:0N!.qi.try[URL;header;0Ni]; / doctor might need a timeout on here 
         .log.error err:c 2;
