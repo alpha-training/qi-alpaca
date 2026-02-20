@@ -1,4 +1,4 @@
-extime,p
+time,p
 sym,s
 high,f
 low,f
@@ -7,3 +7,4 @@ close,f
 volume,j
 vwap,f
 feedtime,p
+tptime,p

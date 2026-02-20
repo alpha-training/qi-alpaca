@@ -8,7 +8,7 @@ if[first not enlist(.qi.tostr .qi.getconf[`ENDPOINT;"/v1beta3/crypto/us"])in enl
 .qi.frompkg[`alpaca;`norm]
 .
 \d .alpaca
-if[not .qi.isproc:0b;.qi.loadschemas`alpaca]
+if[not .qi.isproc;.qi.loadschemas`alpaca]
 .qi.loadschemas`alpaca
 
 URL:.qi.tosym .qi.getconf[`url;`:wss://stream.data.alpaca.markets:443]
@@ -41,10 +41,7 @@ insertlocal:{
             :neg[.z.w].j.j(`action,a)!`subscribe,count[a:`$","vs .qi.getconf[`FEED;"trades,quotes"]]#enlist string tickers]]
     }each .j.k x
  }
-/ .j.k"{\"action\":\"subscribe\",\"trades\":[\"AAPL\",\"NVDA\",\"JPM\",\"FAKEPACA\"],\"quotes\":[\"AAPL\",\"NVDA\",\"JPM\",\"FAKEPACA\"]}"
-/ .j.k"{\"action\":\"subscribe\",\"trades\":[\"FAKEPACA\"],\"quotes\":[\"FAKEPACA\"]}"
-/@[b;first 1_til count b:string`subscribe,count[a:`$","vs .qi.getconf[`FEED;"trades,quotes"]]#enlist tickers;enlist]
-/ $[1-count tickers;packet;@[packet;1_til 1+count a;enlist]]
+
 start::{
     if[.qi.isproc;
         if[null H::.ipc.conn target:.proc.self`depends_on;

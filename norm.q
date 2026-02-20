@@ -4,8 +4,9 @@ norm.Etrades:{
    `$x`S; / Sym
    "f"$x`p;  / price
    "j"$x`s;  / size
-   `$x`x;
-   .z.p)  / exchange
+   `$x`x; / exchange
+   .z.p;  / feedtime
+   0Np)  / tptime
  }
 
 norm.Equotes:{
@@ -17,7 +18,8 @@ norm.Equotes:{
     `$x`ax; /aex
     "f"$x`ap; /ap
     "j"$x`as;
-    .z.p) /as
+    .z.p;
+    0Np) /as
  }
 
 norm.Ebars:{
@@ -29,7 +31,8 @@ norm.Ebars:{
     9h$x`c; / Close
     9h$x`vw; / VWAP
     7h$x`v;
-    .z.p)  / Volume
+    .z.p;
+    0Np)  / Volume
  }
 
 norm.Ctrades:{
@@ -38,7 +41,8 @@ norm.Ctrades:{
    "f"$x`p;  / price
    "f"$x`s;  / size
    `$raze x`tks;
-   .z.p)
+   .z.p;
+   0Np)
  }
 
 norm.Cquotes:{
@@ -48,7 +52,8 @@ norm.Cquotes:{
     "f"$x`bs; /bsize
     "f"$x`ap; /ap
     "f"$x`as; / as
-    .z.p) 
+    .z.p;
+    0Np) 
  }
 
 norm.Cbars:{
@@ -61,5 +66,6 @@ norm.Cbars:{
     9h$x`vw; / VWAP
     7h$x`v; / volume
     "j"$x`n; / Count
-    .z.p) 
+    .z.p;
+    0Np) 
  }

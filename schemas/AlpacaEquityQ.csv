@@ -1,4 +1,4 @@
-extime,p
+time,p
 sym,s
 bidex,s
 bidPrice,f
@@ -7,3 +7,4 @@ askEx,s
 askPrice,f
 askSize,j
 feedtime,p
+tptime,p
