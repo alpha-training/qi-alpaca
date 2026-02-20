@@ -6,9 +6,10 @@ if[first not enlist(.qi.tostr .qi.getconf[`ENDPOINT;"/v1beta3/crypto/us"])in enl
 
 .qi.import`ipc;
 .qi.frompkg[`alpaca;`norm]
-
+.
 \d .alpaca
-if[not .qi.isproc;.qi.loadschemas`alpaca]
+if[not .qi.isproc:0b;.qi.loadschemas`alpaca]
+.qi.loadschemas`alpaca
 
 URL:.qi.tosym .qi.getconf[`url;`:wss://stream.data.alpaca.markets:443]
 header:"GET ",(feed:.qi.tostr .qi.getconf[`ENDPOINT;"/v1beta3/crypto/us"])," HTTP/1.1\r\n","Host: stream.data.alpaca.markets\r\n","\r\n";
@@ -37,10 +38,13 @@ insertlocal:{
     if[`success~`$x`T;
         if[`connected=msg:first`$x`msg;:neg[.z.w] .j.j`action`key`secret!("auth";.conf.ALPACAKEY;.conf.ALPACASECRET)];
         if[`authenticated~first msg;
-            :neg[.z.w] .j.j(`action,a)!@[b;1_til count b:string`subscribe,count[a:`$","vs .qi.getconf[`FEED;"trades,quotes"]]#tickers;enlist]]]
+            :neg[.z.w].j.j(`action,a)!`subscribe,count[a:`$","vs .qi.getconf[`FEED;"trades,quotes"]]#enlist string tickers]]
     }each .j.k x
  }
-
+/ .j.k"{\"action\":\"subscribe\",\"trades\":[\"AAPL\",\"NVDA\",\"JPM\",\"FAKEPACA\"],\"quotes\":[\"AAPL\",\"NVDA\",\"JPM\",\"FAKEPACA\"]}"
+/ .j.k"{\"action\":\"subscribe\",\"trades\":[\"FAKEPACA\"],\"quotes\":[\"FAKEPACA\"]}"
+/@[b;first 1_til count b:string`subscribe,count[a:`$","vs .qi.getconf[`FEED;"trades,quotes"]]#enlist tickers;enlist]
+/ $[1-count tickers;packet;@[packet;1_til 1+count a;enlist]]
 start::{
     if[.qi.isproc;
         if[null H::.ipc.conn target:.proc.self`depends_on;

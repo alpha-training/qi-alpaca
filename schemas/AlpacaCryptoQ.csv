@@ -1,6 +1,7 @@
-time,p
+extime,p
 sym,s
 bidPrice,f
 bidSpread,f
 askPrice,f
 askSpread,f
+feedtime,p
