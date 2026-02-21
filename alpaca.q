@@ -1,8 +1,7 @@
 .qi.requireconfs`ALPACAKEY`ALPACASECRET
-.qi.import`log;
 
 if[first not enlist(.qi.tostr .qi.getconf[`ENDPOINT;"/v1beta3/crypto/us"])in enlist each("/v2/iex";"/v2/test";"/v1beta3/crypto/us";"/v1beta1/news";"/v1beta1/indicative");
-    .log.fatal"Make Sure Your ENDPOINT Is Entered Correctly! Check The Spelling"]
+    .qi.fatal"Make Sure Your ENDPOINT Is Entered Correctly! Check The Spelling"]
 
 .qi.import`ipc;
 .qi.frompkg[`alpaca;`norm]
@@ -33,8 +32,8 @@ insertlocal:{
 
 .z.ws:{
     {if[(f:first x`T)in"tqb";:$[.qi.isproc;sendtotp;insertlocal]x];
-    if[first 402=x`code;.log.fatal"Ensure ALPACAKEY & ALPACASECRET Are Entered Correctly In .conf"];
-    if[first 400=x`code;.log.fatal"Ensure FEED is Spelled Correctly In .conf! (e.g trades rather than trade?)"];
+    if[first 402=x`code;.qi.fatal"Ensure ALPACAKEY & ALPACASECRET Are Entered Correctly In .conf"];
+    if[first 400=x`code;.qi.fatal"Ensure FEED is spelled correctly in .conf! (e.g trades rather than trade?)"];
     if[`success~`$x`T;
         if[`connected=msg:first`$x`msg;:neg[.z.w] .j.j`action`key`secret!("auth";.conf.ALPACAKEY;.conf.ALPACASECRET)];
         if[`authenticated~first msg;
@@ -46,14 +45,14 @@ start::{
     if[.qi.isproc;
         if[null H::.ipc.conn`tp;
             if[null H::first c:.ipc.tryconnect .ipc.conns[`tp1]`port;
-            .log.fatal"Could not connect to ",.qi.tostr[`tp]," '",last[c],"'. Exiting"]];] 
-    .log.info "Connection sequence initiated...";
+            .qi.fatal"Could not connect to ",.qi.tostr[`tp]," '",last[c],"'. Exiting"]];] 
+    .qi.info "Connection sequence initiated...";
     if[not h:first c:0N!.qi.try[URL;header;0Ni]; / doctor might need a timeout on here 
-        .log.error err:c 2;
+        .qi.error err:c 2;
         if[err like"*Protocol*";
             if[.z.o in`l64`m64;
-                .log.info"Try setting the env variable:\nexport SSL_VERIFY_SERVER=NO"]]];
-    if[h;.log.info"Connection success"];
+                .qi.info"Try setting the env variable:\nexport SSL_VERIFY_SERVER=NO"]]];
+    if[h;.qi.info"Connection success"];
  }
 \d .
 
@@ -62,5 +61,5 @@ start::{
 f:first(`AlpacaTrades`norm.trades;`AlpacaQuote`norm.quotes;`AlpacaBar`norm.bars)where"tqb"=first x`T;
 neg[`. `H](`.u.upd;f 0;(get` sv(`.alpaca;f 1))x)
  
-if[""~.qi.try[get;".conf.ALPACAKEY";""]1;.log.fatal"Make Sure Your API Key Is Entered Correctly!"]
-if[""~.qi.try[get;".conf.ALPACASECRET";""]1;.log.fatal"Make Sure Your Secret Key Is Entered Correctly!"]
+if[""~.qi.try[get;".conf.ALPACAKEY";""]1;.qi.fatal"Make Sure Your API Key Is Entered Correctly!"]
+if[""~.qi.try[get;".conf.ALPACASECRET";""]1;.qi.fatal"Make Sure Your Secret Key Is Entered Correctly!"]
