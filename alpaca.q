@@ -43,7 +43,7 @@ insertlocal:{
 
 start::{
     if[.qi.isproc;
-        if[null H::.ipc.conn`tp;
+        if[null H::.ipc.conn target:.proc.self`depends_on;
             if[null H::first c:.ipc.tryconnect .ipc.conns[`tp1]`port;
             .qi.fatal"Could not connect to ",.qi.tostr[`tp]," '",last[c],"'. Exiting"]];] 
     .qi.info "Connection sequence initiated...";
