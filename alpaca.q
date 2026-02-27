@@ -5,7 +5,7 @@ if[first not enlist(.qi.tostr .qi.getconf[`ENDPOINT;"/v1beta3/crypto/us"])in enl
 
 .qi.import`ipc;
 .qi.frompkg[`alpaca;`norm]
-.
+
 \d .alpaca
 if[not .qi.isproc;.qi.loadschemas`alpaca]
 .qi.loadschemas`alpaca
@@ -57,6 +57,7 @@ start::{
                 .qi.fatal"Try setting the env variable:\nexport SSL_VERIFY_SERVER=NO"]]];
     if[h;.qi.info"Connection success"];
  }
+
 \d .
 
 /start`
